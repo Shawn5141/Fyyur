@@ -280,10 +280,7 @@ def create_app(test_config=None):
       #print("quiz",quiz_category,int(quiz_category['id']))
       if not quiz_category :
         abort(404)
-      if isinstance(quiz_category['id'], str):
-        quiz_category['id'] =  str(int(quiz_category['id'])+1)
-      elif isinstance(quiz_category, str):
-        quiz_category['id']+=1
+     
       
       
       if quiz_category['type'] == 'click':

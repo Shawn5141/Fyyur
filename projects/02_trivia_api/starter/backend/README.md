@@ -76,13 +76,14 @@ One note before you delve into your tasks: for each endpoint you are expected to
 - Smaple:
 ```
   {                                                                                         
-  	"categories": [ 
-  	  "Science", 
-  	  "Art",
-  	  "Geography",
-  	  "History",
-  	  "Entertainment",
-  	  "Sports" ], 
+  "categories": [
+    "1":"Science", 
+    "2":"Art", 
+    "3":"Geography", 
+    "4":"History", 
+    "5":"Entertainment", 
+    "1"6"Sports"
+  ], 
   	"success": true
  }     
 ```
@@ -96,12 +97,12 @@ One note before you delve into your tasks: for each endpoint you are expected to
 ```
 {
   "categories": [
-    "Science", 
-    "Art", 
-    "Geography", 
-    "History", 
-    "Entertainment", 
-    "Sports"
+    "1":"Science", 
+    "2":"Art", 
+    "3":"Geography", 
+    "4":"History", 
+    "5":"Entertainment", 
+    "1"6"Sports"
   ], 
   "current_category": [
     "Entertainment", 
@@ -308,7 +309,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 -  Retrieve questions based on categories
 -  Request Argument: None
 -  Return : success, questions, total_questions and current_category
--  Method URL: curl http://localhost:5000/categories/0/questions
+-  Method URL: curl http://localhost:5000/categories/1/questions
 ```
 {
   "current_category": [
@@ -373,7 +374,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 - Post questoin randomly from categories.
 - Able to select all the categories or a specific one.
 - The questions from the category will jump up randomly but without previous shown ones.
-- METHOD URL: curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"type": "Sports", "id": "5"}}'
+- METHOD URL: curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"type": "Sports", "id": "6"}}'
 ```
 {
   "question": {
