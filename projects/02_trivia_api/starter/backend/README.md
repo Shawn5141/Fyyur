@@ -68,7 +68,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 
 ## End Point Reference 
-###GET '/categories'
+### GET '/categories'
 - Fetches a set with value as name for different category.
 - Request Arguments: None
 - Returns: json format.
@@ -87,7 +87,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
  }     
 ```
 
-###GET '/questions'
+### GET '/questions'
 -  Fetch a list of questions includes 'answer', 'category', 'difficulty', 'id', and 'question' inside from dataset and their corresponsding categories as current_category.
 -  Request Argument: Page can be use for showing different paginated question
 -  Return an object that inclues categories, current_categories, questions, status, total_questions.
@@ -193,8 +193,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 ```
 
-###DELETE '/questions/int:question_id'
-
+### DELETE '/questions/int:question_id'
 - Delete questoin with question_id from database 
 - Request Argument: None
 - Return : status of delete and deleted question id
@@ -208,8 +207,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 }
 ```
 
-###POST '/questions'
-
+### POST '/questions' 
 -  Create question with specified content of question, answer, category and difficulty.
 -  Request Argument:  question, answer, category and difficulty.
 -  Return status of create, created question id, current questions and number of total question
@@ -232,8 +230,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 ```
 
-###POST '/questions/search'
-
+### POST '/questions/search'
 -  Fetch question based on question with provided keyword
 -  Request Argument: searchTerm
 -  Return : success status, current question, total question and current_category
@@ -307,7 +304,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 ```
 
-###GET '/categories/<int:category_id>/questions'
+### GET '/categories/<int:category_id>/questions'
 -  Retrieve questions based on categories
 -  Request Argument: None
 -  Return : success, questions, total_questions and current_category
@@ -372,7 +369,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 ```
 
-###POST '/quizzes'
+### POST '/quizzes'
 - Post questoin randomly from categories.
 - Able to select all the categories or a specific one.
 - The questions from the category will jump up randomly but without previous shown ones.
@@ -400,5 +397,5 @@ psql trivia_test < trivia.psql
 python test_flaskr.py
 ```
 
-### Authors
+## Authors
 Shou-En Hsiao is in charged of backend Web Api in __init__.py and test_flask.py files.  All other files are contributed by Udacity- Full Stack Web Developer Nanodegree.
