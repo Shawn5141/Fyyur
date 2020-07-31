@@ -411,9 +411,22 @@ Unprocessable error (422)
 
 ## Testing
 To run the tests, run
+
+1. Drop previous and create a new data base 
 ```
 dropdb trivia_test
 createdb trivia_test
+```
+2. Enter postgresql Interface and create user name caryn with password as mypass. And grant it full access to trivia_test database
+```
+sudo su - postgres
+psql
+create user caryn with encrypted password 'mypass'; 
+grant all privileges on database trivia_test to caryn; 
+\q 
+```
+3. import database into trivia_test
+```
 psql trivia_test < trivia.psql
 python test_flaskr.py
 ```
