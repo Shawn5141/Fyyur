@@ -39,7 +39,8 @@ def create_app(test_config=None):
   '''
   @app.route('/categories')
   def retrieve_categories():
-      categories  =[category.format()['type'] for category in  Category.query.order_by(Category.id).all()]
+      categories  ={category.format()['id']:category.format()['type'] for category in  Category.query.order_by(Category.id).all()}
+      #print("category get",categories)
       return jsonify({
         'success':True,
         'categories':categories
@@ -82,12 +83,15 @@ def create_app(test_config=None):
       
       current_question,current_category = paginate_data(request, selection)
       
-      categories  =[category.format()['type'] for category in  Category.query.order_by(Category.id).all()]
+      #categories  =[category.format()['type'] for category in  Category.query.order_by(Category.id).all()]
+      categories  ={category.format()['id']:category.format()['type'] for category in  Category.query.order_by(Category.id).all()}
       
       #categories = ["Undefined"]+categories
-      current_category = [categories[i-1] for i in current_category]
+      #print("current category",current_category,categories)
+      current_category = [categories[i] for i in current_category]
       #current_category = current_category
       #print("current_question",current_question)
+      #print("current category",current_category)
       if len(current_question) == 0:
           #print("no selection")
           abort(404)
@@ -151,7 +155,7 @@ def create_app(test_config=None):
     new_answer = body.get('answer', '')
     new_category = body.get('category', '')
     new_difficulty = body.get('difficulty', '')
-    #print(new_question,new_answer,new_category,new_difficulty)
+    #print(new_question,new_answer,new_category)
 
     if ((new_question == '') or (new_answer == '')
         or (new_category == '') or (new_difficulty == '')):
@@ -234,16 +238,16 @@ def create_app(test_config=None):
   @app.route('/categories/<int:category_id>/questions', methods=['GET'])
   def retrieve_by_categories(category_id):
       
-      category_id+=1
+      
       selection = Question.query.order_by(Question.id).filter(Question.category==category_id).all()
       
       current_question,current_category = paginate_data(request, selection)
       
-      categories  =[category.format()['type'] for category in  Category.query.order_by(Category.id).all()]
+      categories  ={category.format()['id']:category.format()['type'] for category in  Category.query.order_by(Category.id).all()}
       
-      
-      current_category = [categories[i-1] for i in current_category]
-      
+      #print(categories)
+      current_category = [categories[i] for i in current_category]
+      #print(categories,current_category)
       if len(current_question) == 0:
           
           abort(404)
@@ -317,12 +321,12 @@ def create_app(test_config=None):
 
   @app.errorhandler(422)
   def unprocessable(error):
-      return jsonify({
-          "success": False, 
-          'questions': [],
-          'total_questions': 0,
-          'current_category': []
-      }), 422
+        return jsonify({
+            "success": False, 
+            'questions': [],
+            'total_questions': 0,
+            'current_category': []
+        }), 422
 
   @app.errorhandler(400)
   def bad_request(error):
