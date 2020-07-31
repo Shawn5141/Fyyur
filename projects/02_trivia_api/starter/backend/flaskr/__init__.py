@@ -292,7 +292,7 @@ def create_app(test_config=None):
 
       new_question = available_questions[random.randrange(
           0, len(available_questions))].format() if len(available_questions) > 0 else None
-
+      #print("new ",new_question,available_questions)
       return jsonify({
         'success': True,
         'question': new_question
