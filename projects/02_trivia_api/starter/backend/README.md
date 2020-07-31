@@ -387,6 +387,27 @@ One note before you delve into your tasks: for each endpoint you are expected to
 }
 ```
 
+## Error handling
+
+Not found error will be return as JSON format as followed: Not found error (404)
+```
+{
+    "success": False, 
+    'questions': [],
+    'total_questions': 0,
+    'current_category': []
+},404
+```
+
+Unprocessable error (422) 
+```
+{
+    "success": False, 
+     'questions': [],
+     'total_questions': 0,
+     'current_category': []
+},422
+```
 
 ## Testing
 To run the tests, run
