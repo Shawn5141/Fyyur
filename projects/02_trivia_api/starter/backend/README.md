@@ -82,7 +82,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
     "3":"Geography", 
     "4":"History", 
     "5":"Entertainment", 
-    "1"6"Sports"
+    "6":"Sports"
   ], 
   	"success": true
  }     
