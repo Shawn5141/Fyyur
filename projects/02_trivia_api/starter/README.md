@@ -45,16 +45,16 @@ Pay special attention to what data the frontend is expecting from each API respo
 
 ### Screen Shot
 This is main page of web application  
-![Screenshot][Mainpage.PNG]
+![Screenshot][https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/02_trivia_api/starter/Mainpage.PNG]
 
 List specific questions
-![Screenshot][Science.PNG]
+![Screenshot][https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/02_trivia_api/starter/Science.PNG]
 
 Add question to database
-![Screenshot][add.PNG]
+![Screenshot][https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/02_trivia_api/starter/add.PNG]
 
 Choose specific categories for playing 
-![Screenshot][choose.PNG]
+![Screenshot][https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/02_trivia_api/starter/choose.PNG]
 
 Take Quiz
-![Screenshot][Quiz.PNG]
+![Screenshot][https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/02_trivia_api/starter/Quiz.PNG]
