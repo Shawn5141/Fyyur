@@ -43,4 +43,18 @@ Pay special attention to what data the frontend is expecting from each API respo
 
 [View the README.md within ./frontend for more details.](./frontend/README.md)
 
-### Screen Shot 
+### Screen Shot
+This is main page of web application  
+![Screenshot][Mainpage.PNG]
+
+List specific questions
+![Screenshot][Science.PNG]
+
+Add question to database
+![Screenshot][add.PNG]
+
+Choose specific categories for playing 
+![Screenshot][choose.PNG]
+
+Take Quiz
+![Screenshot][Quiz.PNG]
