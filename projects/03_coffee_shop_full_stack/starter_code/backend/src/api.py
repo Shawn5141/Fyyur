@@ -16,7 +16,7 @@ CORS(app)
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
-# db_drop_and_create_all()
+#db_drop_and_create_all()
 
 ## ROUTES
 '''
@@ -27,7 +27,10 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
-
+@app.route('/drinks')
+def get_drinks():
+    
+    return 'Access Granted'
 
 '''
 @TODO implement endpoint
@@ -37,6 +40,17 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+@requires_auth('get:drinks-detail')
+def get_drinks_detail(jwt):
+    try:
+        return json.dumps({
+            'success':
+            True,
+            'drinks': [drink.short() for drink in Drink.query.all()]
+        }), 200
+    except:
+        abort(500)
 
 
 '''
@@ -48,7 +62,33 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks',methods=["POST"])
+@requires_auth('post:drinks')
+def create_drinks(jwt):
+  
+    try:
+        new_drink = request.get_json()
 
+        title = json.loads(request.data.decode('utf-8'))['title']
+        if title == '':
+            abort(400)
+
+        drink = Drink(
+            title=new_drink.get('title'),
+            recipe=json.dumps(new_drink.get('recipe'))
+        )
+        drink.insert()
+
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long()]
+        }), 200
+
+    except exc.SQLAlchemyError as e:
+        print(e)
+        abort(422)
+    except Exception as error:
+        raise error
 
 '''
 @TODO implement endpoint
@@ -61,8 +101,31 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks/<int:drinks_id>',methods=["PATCH"])
+@requires_auth('patch:drinks')
+def update_drink(jwt,drinks_id):
+    
+    drink=Drink.query.get(drinks_id)
+    if not drink:
+        abort(404)
+    update = request.get_json()
 
-
+    title = update.get('title')
+    recipe= update.get('recipe')
+    
+    try:
+        drink.title = title
+        drink.recipe =json.dumps(recipe) 
+        drink.update()
+        return jsonify({"success": True,
+                        "drinks": drink.long()})
+    except exc.SQLAlchemyError as e:
+        print(e)
+        abort(422)
+    except Exception as error:
+        print(error)
+        abort(500)
+   
 '''
 @TODO implement endpoint
     DELETE /drinks/<id>
@@ -74,7 +137,25 @@ CORS(app)
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drinks/<int:drinks_id>',methods=["DELETE"])
+@requires_auth('delete:drinks')
+def delete_drink(jwt,drinks_id):
+    
+    drink=Drink.query.get(drinks_id)
+    if not drink:
+        abort(404)
 
+    try:
+      
+        drink.delete()
+        return jsonify({"success": True,
+                        "delete": drinks_id})
+    except exc.SQLAlchemyError as e:
+        print(e)
+        abort(422)
+    except Exception as error:
+        print(error)
+        abort(500)
 ## Error Handling
 '''
 Example error handling for unprocessable entity
@@ -103,6 +184,22 @@ def unprocessable(error):
     error handler should conform to general task above 
 '''
 
+@app.errorhandler(404)
+def Not_found(error):
+    return jsonify({
+                    "success": False, 
+                    "error": 404,
+                    "message": "Not_found"
+                    }), 404
+
+
+@app.errorhandler(500)
+def Internal_Server_Error(error):
+    return jsonify({
+                    "success": False, 
+                    "error": 500,
+                    "message": "Internal Server Error"
+                    }), 500
 
 '''
 @TODO implement error handler for AuthError
