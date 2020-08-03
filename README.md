@@ -10,7 +10,7 @@ This is the public repository for Udacity's Full-Stack Nanodegree program.
 - Implement backend for udacity trivia app which allow user to display questions, delete questions, add questions, search for questions based on a text query string and lastly play the quiz game, randomizing either all questions or within a specific category.
 
 3. [coffee_shop_full_stack](https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/03_coffee_shop_full_stack/starter_code)
-- Programmed a backedend application that utilized third-party validation for user which has different authorities toward application.
+- Programmed a backedend application for udacity coffe shop application that utilized third-party validation for user which has different authorities toward application.
 Display graphics representing the ratios of ingredients in each drink. 
 - Allow public users to view drink names and graphics.
 - Allow the shop baristas to see the recipe information.
