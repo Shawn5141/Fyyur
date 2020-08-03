@@ -29,9 +29,16 @@ CORS(app)
 '''
 @app.route('/drinks')
 def get_drinks():
-    
-    return 'Access Granted'
 
+    #drinks  = [drink.short() for drink in Drink.query.all()]
+    try:
+        drinks  = [drink.short() for drink in Drink.query.all()]
+        return json.dumps({
+            "success": True, 
+            "drinks": drinks
+            })
+    except:
+        abort(404)
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -43,14 +50,17 @@ def get_drinks():
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(jwt):
+    print(jwt)
+    print(Drink.query.all())
     try:
+
         return json.dumps({
             'success':
             True,
             'drinks': [drink.short() for drink in Drink.query.all()]
         }), 200
     except:
-        abort(500)
+        abort(401)
 
 
 '''
@@ -77,18 +87,22 @@ def create_drinks(jwt):
             title=new_drink.get('title'),
             recipe=json.dumps(new_drink.get('recipe'))
         )
+        print("before insert",json.dumps(new_drink.get('recipe')))
         drink.insert()
-
-        return jsonify({
+        print("drink long",[drink.long()])
+        return jsonify({    
             'success': True,
             'drinks': [drink.long()]
         }), 200
 
     except exc.SQLAlchemyError as e:
-        print(e)
+        print("post error ",e)
         abort(422)
     except Exception as error:
-        raise error
+        raise AuthError({
+                'code': '401',
+                'description': 'unable to post.'
+            }, 401)
 
 '''
 @TODO implement endpoint
@@ -118,14 +132,16 @@ def update_drink(jwt,drinks_id):
         drink.recipe =json.dumps(recipe) 
         drink.update()
         return jsonify({"success": True,
-                        "drinks": drink.long()})
+                        "drinks": [drink.long()]})
     except exc.SQLAlchemyError as e:
         print(e)
         abort(422)
     except Exception as error:
         print(error)
-        abort(500)
-   
+        raise AuthError({
+                'code': '401',
+                'description': 'unable to patch.'
+            }, 401)
 '''
 @TODO implement endpoint
     DELETE /drinks/<id>
@@ -205,3 +221,11 @@ def Internal_Server_Error(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+
+@app.errorhandler(AuthError)
+def Internal_Server_Error(AuthError):
+    return jsonify({
+                    "success": False, 
+                    "error": 401,
+                    "message": "AuthError"
+                    }), 401
