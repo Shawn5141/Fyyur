@@ -5,7 +5,6 @@
 1. [Motivation](#motivation)
 2. [Start Project locally](#start-locally)
 3. [API Documentation](#api)
-4. [Authentification](#authentification)
 
 <a name="motivation"></a>
 ## Motivations & Covered Topics
