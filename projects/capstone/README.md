@@ -30,9 +30,10 @@ To start to run the local developement,
   $ source env/scripts/activate
   ``` 
 
-2. Install the dependencies:
+2. Install the dependencies and export env variable:
 ```bash
 $ pip install -r requirements.txt
+$ source setup.sh
 ```
 
 3. Change some information in config.py inorder to connect to local database if you want to run it locally and use local database
