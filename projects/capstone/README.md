@@ -5,7 +5,7 @@
 1. [Motivation](#motivation)
 2. [Start Project locally](#start-locally)
 3. [API Documentation](#api)
-
+4. []
 <a name="motivation"></a>
 ## Motivations & Covered Topics
 
@@ -480,3 +480,19 @@ will return
 	"message": "unprocessable"
 }
 ```
+
+
+### Auth0
+If you create your own Auth account and configure setting correctly by create 3 user assigned with Producer, Director and Assistant role which follow above permission.
+You can use following http address to login and remove login session to login different account
+
+Login Page:
+https://fsnd5141.us.auth0.com/authorize?audience=capstone&response_type=token&client_id=B3TZ2WUxfLCQmvd98tmShMYDIS4a4m6D&redirect_uri=http://flask-deploy-test2.herokuapp.com
+
+Remove login session: 
+https://fsnd5141.us.auth0.com/v2/logout
+
+
+
+### Authors
+Shou-En Hsiao is in charged of capstone Api in this folder. All other files are contributed by Udacity- Full Stack Web Developer Nanodegree.
