@@ -5,7 +5,7 @@
 1. [Motivation](#motivation)
 2. [Start Project locally](#start-locally)
 3. [API Documentation](#api)
-4. []
+4. [Auth0](#Auth0)
 <a name="motivation"></a>
 ## Motivations & Covered Topics
 
@@ -481,7 +481,7 @@ will return
 }
 ```
 
-
+# <a name='Auth0'></a>
 ### Auth0
 If you create your own Auth account and configure setting correctly by create 3 user assigned with Producer, Director and Assistant role which follow above permission.
 You can use following http address to login and remove login session to login different account
