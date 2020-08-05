@@ -1,316 +1,483 @@
-# Deploying-Flask-To-Heroku
+# FSND: Capstone Project
 
-Deploying a Flask App To Heroku Tutorial 📝
+## Content
 
-* [Youtube Demo](https://youtu.be/fidKOYWWfkM)
-* [How to use Heroku Postgres deploying](https://youtu.be/OvQetdMN88E)
+1. [Motivation](#motivation)
+2. [Start Project locally](#start-locally)
+3. [API Documentation](#api)
+4. [Authentification](#authentification)
 
-今天教大家如何佈署 Flask App 到 [Heroku](https://dashboard.heroku.com/)
+<a name="motivation"></a>
+## Motivations & Covered Topics
 
-[Heroku](https://dashboard.heroku.com/) 免費版本
+This is the last project of the `Udacity-Full-Stack-Nanodegree` Course.
+It covers following technical topics in 1 app:
 
-* 可以創造 5個 app。
-* 24小時一定要休息6小時的規定。
-* 支援很多種程式語言。
-* 有SSL(https)。
+1. Database modeling with `postgres` & `sqlalchemy` (see `models.py`)
+2. API to performance CRUD Operations on database with `Flask` (see `app.py`)
+3. Automated testing with `Unittest` (see `test_app`)
+4. Authorization & Role based Authentification with `Auth0` (see `auth.py`)
+5. Deployment on `Heroku`
 
-更多說明請參考 [Heroku](https://dashboard.heroku.com/)
+<a name="start-locally"></a>
+## Start Project locally
+Dependency Requirement: Python3 and postgres installed on machine.
 
-## 教學
+To start to run the local developement,
 
-### 步驟一
+1. Initialize and activate a virtualenv:
+  ```bash
+  $ virtualenv --no-site-packages env
+  $ source env/scripts/activate
+  ``` 
 
-先註冊 Heroku 帳號，請到 [Heroku](https://dashboard.heroku.com/)  註冊
-
-### 步驟二
-
-請安裝 [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install) (請選擇符合自己得作業系統，這裡用 Windows 介紹)
-
-安裝過程，如果已經有安裝過 [Git](https://git-scm.com/) ，可以把勾勾拿掉，
-
-![alt tag](http://i.imgur.com/A3QLRpA.jpg)
-
-安裝完後，請使用你的 cmd (命令提示字元) 輸入以下指令
-
-```cmd
-heroku --version
+2. Install the dependencies:
+```bash
+$ pip install -r requirements.txt
 ```
 
-如果安裝正確，會跳出你安裝的 Heroku CLI 版本
-
-![alt tag](http://i.imgur.com/UuWGUk1.jpg)
-
-接著再請你使用你的 cmd (命令提示字元) 輸入你的 [Heroku](https://dashboard.heroku.com/) 帳號  和 密碼
-
-```cmd
-heroku login
-```
-
-![alt tag](http://i.imgur.com/6vtoORM.jpg)
-
-### 步驟三
-
-請先 clone 我的簡單 flask 範例
-
-```cmd
-git clone https://github.com/twtrubiks/Deploying-Flask-To-Heroku.git
-```
-
-在資料夾裡，有幾個比較重要的檔案，分別為
-
-* requirements.txt
-* Procfile
-* runtime.txt
-
-#### requirements.txt
-
-這個檔案是要告訴 [Heroku](https://dashboard.heroku.com/) 你的環境需要那些其他的套件
-
-你可以使用 cmd (命令提示字元) 輸入以下指令查看目前電腦所安裝的套件
-
-p.s 請安裝你需要的套件即可
-
-```cmd
-pip freeze
-```
-
-![alt tag](http://i.imgur.com/WxuORWB.jpg)
-
-然後可以使用以下指令匯出文字檔 requirements.txt
-
-```cmd
-pip freeze > requirements.txt
-```
-
-![alt tag](http://i.imgur.com/mlhGXOk.jpg)
-
-該目錄底下會多出 requirements.txt
-
-p.s 可以把不需要安裝的套件從 requirements.txt 裡移除
-
-#### Procfile
-
-Procfile 這個檔案是要告訴 [Heroku](https://dashboard.heroku.com/) 要如何啟動這個 web app
-
-在 [Heroku](https://dashboard.heroku.com/) 裡，官方使用 [Gunicorn](http://gunicorn.org/) 來啟動 web server，請參考
-
-[python-gunicorn Heroku](https://devcenter.heroku.com/articles/python-gunicorn)
-
-所以在 **requirements.txt** 裡，請記得要輸入 [gunicorn](http://gunicorn.org/)
-
-Procfile 檔案，基本使用方法如下
-
-```text
-web gunicorn app_run:app
-```
-
-app_run 就是你的 app_run.py，請依照自己設定的名稱自行修改
-
-#### runtime.txt
-
-runtime.txt 檔案裡，只需要簡單的填入你想要指定的 python 版本
-
-```text
-python-3.4.3
-```
-
-可參考 [Heroku python-runtimes](https://devcenter.heroku.com/articles/python-runtimes)
-
-如果你不想指定 python 的版本，這個檔案可以忽略。
-
-### 步驟四
-
-#### 先創造 Heroku application
-
-方法一 :
-
-使用你的 cmd (命令提示字元) 輸入以下指令
-
-```cmd
-heroku create
-```
-
-![alt tag](http://i.imgur.com/OJS8K3N.jpg)
-
-p.s 你看到的網址會和我看到的不一樣，請輸入你看到的
-
-方法二 :
-
-到網頁上新增一個 [Heroku application](https://dashboard.heroku.com/new?org=personal-apps)
-![alt tag](http://i.imgur.com/8KVzbfD.jpg)
-
-#### 初始化
-
-使用你的 cmd (命令提示字元) 切換到目錄底下，先著初始化
-
-```cmd
-git init
-```
-
-#### 佈署
-
-指定 remote
-
-```cmd
-heroku git:remote -a tranquil-earth-29753
-```
-
-tranquil-earth-29753 這是我自己的，請輸入你的
-
-這些指令你可以在 web app 裡的 deploy 看到
-
-![alt tag](http://i.imgur.com/hQ5FN7A.jpg)
-
-基本上就是 git 的操作，如不清楚什麼是 [Git](https://git-scm.com/)
-
-可以參考我之前寫的 [Git-Tutorials](https://github.com/twtrubiks/Git-Tutorials)
-
-```cmd
-git add .
-git commit -am "make it better"
-git push heroku master
-```
-
-![alt tag](http://i.imgur.com/pRC4WGW.jpg)
-
-![alt tag](http://i.imgur.com/gPaK7kd.jpg)
-
-佈署完畢，網址的格式為，如上面這張圖
-
-```url
-https://[ 你的 app 名稱 ].herokuapp.com/
-```
-
-例如我的網址格式為
-
-```url
-https://tranquil-earth-29753.herokuapp.com/
-```
-
-commit ID [4a42e26aee2bff1b10247d7e8a75d4d86b0c83b8](https://github.com/twtrubiks/Deploying-Flask-To-Heroku/tree/4a42e26aee2bff1b10247d7e8a75d4d86b0c83b8)
-
-## 畫面
-
-如果使用我的範例佈署成功，畫面應該如下
-
-我的網址為 [https://tranquil-earth-29753.herokuapp.com/](https://tranquil-earth-29753.herokuapp.com/)
-
-![alt tag](http://i.imgur.com/WGjBKEJ.jpg)
-
-## LOG 資訊
-
-**log 的資訊非常重要** ，因為有時候本機端可以正常運行，但佈署上去就無法運行，
-
-所以這時候就要看 log 資訊。
-
-可以使用以下指令查看你在 heroku上 的 web app 的 log
-
-```cmd
-heroku logs
-```
-
-![alt tag](http://i.imgur.com/1Oe5rER.jpg)
-
-或是可以從網頁端查看
-
-![alt tag](http://i.imgur.com/NmyRvxs.jpg)
-
-網址格式為
-
-```url
-https://dashboard.heroku.com/apps/[ 你的 app 名稱 ]/logs
-```
-
-## 如何在 heroku 上使用 database
-
-請先到下列網址建立 database
-[heroku addons](https://elements.heroku.com/addons)
-
-你會看到很多 db ，這裡用 Heroku Postgres 當作範例
-
-![alt tag](http://i.imgur.com/AxoKeka.jpg)
-
-接著安裝就行了，如果你還沒有登入，他會請你先登入
-
-![alt tag](http://i.imgur.com/FCaqoPB.jpg)
-
-選擇你的 db 是要給哪個專案用的
-
-![alt tag](http://i.imgur.com/BQZVgjc.jpg)
-
-接著選擇方案，這裡選擇 FREE 方案
-
-![alt tag](http://i.imgur.com/jleHgxw.jpg)
-
-接下來你就會看到 DB 已經被建立了
-
-![alt tag](http://i.imgur.com/aa1kX6o.jpg)
-
-點擊他，就可以跳到下面的畫面
-
-![alt tag](http://i.imgur.com/eGQKDg1.jpg)
-
-接著按 View Credentials
-
-![alt tag](http://i.imgur.com/HuHQUvm.jpg)
-
-可以看到自己 db 的一些資料，包含 帳號、密碼 資訊
-
-![alt tag](http://i.imgur.com/roGcz1i.jpg)
-
-現在我們來建立 DB 的 TABLE
-
-先將 URI 這個很長的連接字串，貼到 [dbModel.py](https://github.com/twtrubiks/Deploying-Flask-To-Heroku/blob/master/dbModel.py) 裡面
-
+3. Change some information in config.py inorder to connect to local database if you want to run it locally and use local database
 ```python
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgres://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+database_setup = {
+    "database_name_production" : "capstone_local_test_db",
+    "user_name" : "postgres", # default postgres user name
+    "password" : "postgres", # if applicable. If no password, just type in None
+    "port" : "localhost:5432" # default postgres port
+}
+```
+ - Just change `user_name`, `password` and `port` to whatever you choose while installing postgres.
+
+4. Create local postgres database named `capstone_local_test_db` 
+```
+sudo -u postgres createuser --superuser USER_NAME   # Created username if don't want to use postgres as default user
+sudo -u postgres postgres psql password USER_NAME   # Set password
+sudo -u  postgres createdb capstone_local_test_db
+
 ```
 
-請貼自己的連接字串!!!
+5. Set Auth0
+If you only want to test the API (i.e. Project Reviewer), you can
+simply take the existing bearer tokens in `config.py`.
 
-之後，我們使用 [Flask-Migrate-Tutorial](https://github.com/twtrubiks/Flask-Migrate-Tutorial) 來建立  DB 的 TABLE，
+If you already know your way around `Auth0`, just insert your data 
+into `config.py` => auth0_config.
 
-如果不懂，請參考  [Flask-Migrate-Tutorial](https://github.com/twtrubiks/Flask-Migrate-Tutorial) 範例。
-
-P.S 假如你和我一樣是使用 PostgreSQL ， 需要額外安裝套件 [psycopg2](http://initd.org/psycopg/)
-
-```cmd
-pip install psycopg2
+6. Run the development server:
+```
+python app.py
 ```
 
-一切處理完畢之後，再進行部屬就完成了。
+7. Test all 48 tests
+```python
+# If connect to heroku postgres, run this two command: 
+#Because heroku has connection limit, so I seperated test.py into two files:
+python test_movie_app.py
+python test_action_app.py
 
-下圖為簡單的範例  [Demo](https://flask-demo-test.herokuapp.com/index)
 
-commit ID [ce4c8ee68f58c861a5a8072793912b204c186906](https://github.com/twtrubiks/Deploying-Flask-To-Heroku/tree/ce4c8ee68f58c861a5a8072793912b204c186906)
+# If connect to local postgres, urn this commned:
+python test.py
+```
 
-![alt tag](http://i.imgur.com/j1JAKS4.jpg)
+## API Documentation
+<a name="api"></a>
 
-database information 就是將 db 的資料全部顯示出來
+### Base URL
 
-![alt tag](http://i.imgur.com/a6F14Aw.jpg)
+**http://flask-deploy-test2.herokuapp.com**
 
-## Heroku 注意事項
+### Avaliable Endpoint
 
-因為 heroku 的關係，有些人可能會遇到佈署失敗的問題，可以試著將 [runtime.txt](https://github.com/twtrubiks/Deploying-Flask-To-Heroku/blob/master/runtime.txt)  修改為 3.6.2
+Here is a short table about which ressources exist and which method you can use on them.
+```
+                      Allowed Methods
+   Endpoints    |  GET |  POST |  DELETE | PATCH  |
+                |------|-------|---------|--------|
+  /actors       |  [x] |  [x]  |   [x]   |   [x]  |   
+  /movies       |  [x] |  [x]  |   [x]   |   [x]  |   
+```
 
-## 執行環境
+### Roles (Auth0):
+They are 3 Roles with distinct permission sets:
 
-* Windows 10
+Casting Assistant:
+- GET /actors (view:actors): Can see all actors
+- GET /movies (view:movies): Can see all movies
 
-## Reference
+Casting Director (everything from Casting Assistant plus)
+- POST /actors (create:actors): Can create new Actors
+- PATCH /actors (edit:actors): Can edit existing Actors
+- DELETE /actors (delete:actors): Can remove existing Actors from database
+- PATCH /movies (edit:movies): Can edit existing Movies
 
-* [Heroku](https://dashboard.heroku.com/)
+Exectutive Dircector (everything from Casting Director plus)
+- POST /movies (create:movies): Can create new Movies
+- DELETE /movies (delete:movies): Can remove existing Motives from database
 
-## Donation
+Before start to run, make suer you are in virtualenv and need to run following script to export jwt token into env
+```
+source setup.sh 
+```
 
-文章都是我自己研究內化後原創，如果有幫助到您，也想鼓勵我的話，歡迎請我喝一杯咖啡:laughing:
+### How to work with each endpoint
 
-![alt tag](https://i.imgur.com/LRct9xa.png)
+Click on a link to directly get to the ressource.
 
-[贊助者付款](https://payment.opay.tw/Broadcaster/Donate/9E47FDEF85ABE383A0F5FC6A218606F8)
+1. [Actors](#actors)
+   1. [GET /actors](#actors)
+   2. [POST /actors](#post-actors)
+   3. [DELETE /actors](#delete-actors)
+   4. [PATCH /actors](#patch-actors)
+2. [Movies](#movies)
+   1. [GET /movies](#get-movies)
+   2. [POST /movies](#post-movies)
+   3. [DELETE /movies](#delete-movies)
+   4. [PATCH /movies](#patch-movies)
 
-## License
+# <a name="actors"></a>
+### Actors
 
-MIT license
+# <a name="get-actors"></a>
+### 1. GET /actors
+- Fetches a list of dictionaries of examples in which the keys are the ids with all available fields
+- Request Arguments: **None**
+- Request Headers: **None**
+- Requires permission: `get:actors`
+- Allowed Role: PRODUCER, DIRECTOR and ASSISTANT
+- Returns: 
+  1. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `name`
+      - **string** `gender`
+      - **integer** `age`
+  2. **boolean** `success`
+```bash
+$ curl  http://flask-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+$ curl  http://flask-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${DIRECTOR}"
+$ curl  http://flask-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${ASSISTANT}"
+```
+
+#### Example response
+```
+{"success": true, 
+  "actors": [{"id": 1, "name": "Christy", "age": 22, "gender": "Female"}]
+}
+```
+
+#### Errors
+If you try fetch a page which does not have any actors, you will encounter an error which looks like this:
+```
+$ curl  http://flask-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+```
+will return
+```
+{
+  "error": 404,
+  "message": "Not_found",
+  "success": false
+}
+```
+
+# <a name="post-actors"></a>
+### 2. POST /actors
+- Post actor with name, gender and age into database
+- Request Arguments: actors name and gender
+- Request Headers: "Authorization: Bearer ${PRODUCER}" or "Authorization: Bearer ${DIRECTOR}"
+- Requires permission: `post:actors`
+- Allowed Role: PRODUCER, DIRECTOR 
+- Returns: 
+  1. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `name`
+      - **string** `gender`
+      - **integer** `age`
+  2. **boolean** `success`
+```bash
+$ curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"name":"Tom Hank","age":68,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors
+$ curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"name":"Tom Hank","age":68,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors
+```
+
+#### Example response
+```
+{
+	"actor":[{"age":68,"gender":"male","id":8,"name":"Tom Hank"}],
+	"success":true
+}
+```
+
+#### Errors
+If post an Actor with already existing field values will result in an 422 error:
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
+
+
+# <a name="patch-actors"></a>
+### 3. PATCH /actors
+- Edit actor with name, gender and age into database
+- Request Arguments: "Authorization: Bearer ${PRODUCER}" or "Authorization: Bearer ${DIRECTOR}"
+- Request Headers: actors name and gender
+- Requires permission: `patch:actors`
+- Allowed Role: PRODUCER, DIRECTOR 
+- Returns: 
+  1. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `name`
+      - **string** `gender`
+      - **integer** `age`
+  2. **boolean** `success`
+```bash
+$ curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/2
+
+$ curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/2
+```
+#### Example response
+```
+{
+	"actor":[{"age":30,"gender":"male","id":2,"name":"Tom Hank"}],
+	"success":true
+}
+
+```
+
+#### Errors
+If you try to update an actor with an invalid id it will throw an 404error:
+```
+$ curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/125
+```
+will return
+````
+{
+  "error": 404,
+  "message": "not found",
+  "success": false
+}
+````
+Additionally, trying to update an Actor with already existing field values will result in an 422 error:
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
+
+
+# <a name="delete-actors"></a>
+### 4. DELETE /actors
+- delete actor with name, gender and age into database
+- Request Arguments: "Authorization: Bearer ${PRODUCER}" or "Authorization: Bearer ${DIRECTOR}"
+- Request Headers: actor's name and gender
+- Requires permission: `delete:actors`
+- Allowed Role: PRODUCER, DIRECTOR 
+- Returns: 
+  1. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `name`
+      - **string** `gender`
+      - **integer** `age`
+  2. **boolean** `success`
+```bash
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/actors/1
+
+
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}"  http://flask-deploy-test2.herokuapp.com/actors/1
+
+```
+
+#### Example response
+```
+{
+	"delete":1,
+	"success":true
+}
+
+```
+
+#### Errors
+If you try to delete actor with an invalid id, it will throw an 422error:
+```
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/actors/100
+
+```
+will return
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
+
+
+# <a name="movies"></a>
+### Movies
+
+# <a name="get-movies"></a>
+### 1. GET /movies
+- Fetches a list of dictionaries of examples in which the keys are the ids with all available fields
+- Request Arguments: **None**
+- Request Headers: **None**
+- Requires permission: `get:movies`
+- Allowed Role: PRODUCER, DIRECTOR and ASSISTANT
+- Returns: 
+  1. List of dict of movies with following fields:
+      - **integer** `id`
+      - **string** `title`
+      - **Date** `release_date`
+  2. **boolean** `success`
+```bash
+$ curl  http://flask-deploy-test2.herokuapp.com/movies -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+$ curl  http://flask-deploy-test2.herokuapp.com/movies -H 'Accept: application/json' -H "Authorization: Bearer ${DIRECTOR}"
+$ curl  http://flask-deploy-test2.herokuapp.com/movies -H 'Accept: application/json' -H "Authorization: Bearer ${ASSISTANT}"
+```
+#### Example response
+```
+{
+	"success": true, 
+	"movies": [{"id": 1, "title": "The Great Escape", "release_date": "2020-08-04T00:00:00"}, {"id": 3, "title": "Talent", "release_date": "2020-08-12T00:00:00"}]
+}
+
+```
+
+#### Errors
+If database  does not have any movies, you will encounter an error which looks like this:
+```
+$ curl  http://flask-deploy-test2.herokuapp.com/movies -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+```
+will return
+```
+{
+  "error": 404,
+  "message": "Not_found",
+  "success": false
+}
+```
+
+
+# <a name="post-movies"></a>
+### 2. POST /movies
+- Post actor with name, gender and age into database
+- Request Arguments: movies title and release-date
+- Request Headers: "Authorization: Bearer ${PRODUCER}"
+- Requires permission: `post:movies`
+- Allowed Role: PRODUCER 
+- Returns: 
+  1. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `title`
+      - **Date** `release_date`
+  2. **boolean** `success`
+```bash
+$ curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X POST http://flask-deploy-test2.herokuapp.com/movies
+```
+
+#### Example response
+```
+{
+	"movie":[{"id":4,"release_date":"2020-08-04T00:00:00","title":"Talent"}],
+	"success":true}   
+
+```
+
+#### Errors
+If post an movies with already existing field values will result in an 422 error:
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
+
+# <a name="patch-movies"></a>
+### 3. PATCH /movies
+- Edit actor with name, gender and age into database
+- Request Arguments: "Authorization: Bearer ${PRODUCER}" or "Authorization: Bearer ${DIRECTOR}"
+- Request Headers: movies name and gender
+- Requires permission: `patch:movies`
+- Allowed Role: PRODUCER, DIRECTOR 
+- Returns: 
+  1. List of dict of movies with following fields:
+     - **integer** `id`
+      - **string** `title`
+      - **Date** `release_date`
+  2. **boolean** `success`
+```bash
+$ curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X PATCH http://flask-deploy-test2.herokuapp.com/movies/4
+
+$ curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X PATCH http://flask-deploy-test2.herokuapp.com/movies/4
+```
+#### Example response
+```
+{
+	"movie":[{"id":4,"release_date":"2020-08-04T00:00:00","title":"Talent"}],
+	"success":true
+}   
+```
+
+#### Errors
+If you try to update an movie with an invalid id it will throw an 404error:
+```
+$ curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X POST http://flask-deploy-test2.herokuapp.com/movies/100
+```
+will return
+````
+{
+  "error": 404,
+  "message": "not found",
+  "success": false
+}
+````
+Additionally, trying to update an Actor with already existing field values will result in an 422 error:
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
+
+
+# <a name="delete-movies"></a>
+### 4. DELETE /movies
+- delete actor with name, gender and age into database
+- Request Arguments: "Authorization: Bearer ${PRODUCER}" 
+- Request Headers: actor's name and gender
+- Requires permission: `delete:movies`
+- Allowed Role: PRODUCER, DIRECTOR 
+- Returns: 
+  1. List of dict of movies with following fields:
+      - **integer** `id`
+      - **string** `title`
+      - **Date** `release_date`
+  2. **boolean** `success`
+```bash
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/movies/1
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}"  http://flask-deploy-test2.herokuapp.com/movies/1
+```
+#### Example response
+```
+{
+	"delete":1,
+	"success":true
+}
+```
+#### Errors
+If you try to delete movies with an invalid id, it will throw an 422error:
+```
+$ curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/movies/100
+
+```
+will return
+```
+{
+	"success": False,
+	"error": 422,
+	"message": "unprocessable"
+}
+```
