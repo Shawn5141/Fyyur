@@ -23,47 +23,47 @@ from datetime import date
 
 
 class AgencyTestCase(unittest.TestCase):
-	def setUp(self):
-		self.app = create_app()
-		self.client = self.app.test_client
-		self.assistant_t = bearer_tokens['casting_assistant']
-		self.producer_t = bearer_tokens['executive_producer']
-		self.director_t = bearer_tokens['casting_director']
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client
+        self.assistant_t = bearer_tokens['casting_assistant']
+        self.producer_t = bearer_tokens['executive_producer']
+        self.director_t = bearer_tokens['casting_director']
 
-		self.new_movie1 = {
-			'title': 'Fast & Furious 1',
-			"release_date":"2001-08-01"
-		}
+        self.new_movie1 = {
+            'title': 'Fast & Furious 1',
+            "release_date":"2001-08-01"
+        }
 
-		self.new_movie2 = {
-			'title': 'Fast & Furious 2',
-			"release_date":"2001-08-02"
-		}
-		self.new_movie3 = {
-			'title': 'Fast & Furious 3',
-			"release_date":"2001-08-03"
-		}
+        self.new_movie2 = {
+            'title': 'Fast & Furious 2',
+            "release_date":"2001-08-02"
+        }
+        self.new_movie3 = {
+            'title': 'Fast & Furious 3',
+            "release_date":"2001-08-03"
+        }
 
-		self.new_actor1 = {
-			'name': 'Jack',
-			'age': 27,
-			'gender': 'Male'
-		}
+        self.new_actor1 = {
+            'name': 'Jack',
+            'age': 27,
+            'gender': 'Male'
+        }
 
-		self.new_actor2 = {
-			'name': 'Pull Allen',
-			'age': 27,
-			'gender': 'Male'
-		}
+        self.new_actor2 = {
+            'name': 'Pull Allen',
+            'age': 27,
+            'gender': 'Male'
+        }
 
-		self.new_actor3 = {
-			'name': 'Mike Jason',
-			'age': 40,
-			'gender': 'Male'
-		}
+        self.new_actor3 = {
+            'name': 'Mike Jason',
+            'age': 40,
+            'gender': 'Male'
+        }
 
-	def tearDown(self):
-		pass
+    def tearDown(self):
+        pass
 
 # ---------------------------------------------------------------------------  
 #            Producer           Director        Assistance
@@ -87,249 +87,249 @@ class AgencyTestCase(unittest.TestCase):
 # Tests for /actors GET
 #----------------------------------------------------------------------------#
 # Producer Success
-	def test_get_actor_producer(self):
-		res = self.client().get('/actors', headers={
-			'Authorization': self.producer_t,
-			'Content-Type': 'Text'
-			})
-		data = json.loads(res.data)
+    def test_get_actor_producer(self):
+        res = self.client().get('/actors', headers={
+            'Authorization': self.producer_t,
+            'Content-Type': 'Text'
+            })
+        data = json.loads(res.data)
 
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actors'])
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actors'])
 
 # Director Success
-	def test_get_actor_Director(self):
-		res = self.client().get('/actors', headers={
-			'Authorization': self.director_t,
-			'Content-Type': 'Text'
-			})
-		data = json.loads(res.data)
+    def test_get_actor_Director(self):
+        res = self.client().get('/actors', headers={
+            'Authorization': self.director_t,
+            'Content-Type': 'Text'
+            })
+        data = json.loads(res.data)
 
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actors'])
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actors'])
 # Assistant Success
-	def test_get_actor_Assistant(self):
-		res = self.client().get('/actors', headers={
-			'Authorization': self.assistant_t,
-			'Content-Type': 'Text'
-			})
-		data = json.loads(res.data)
+    def test_get_actor_Assistant(self):
+        res = self.client().get('/actors', headers={
+            'Authorization': self.assistant_t,
+            'Content-Type': 'Text'
+            })
+        data = json.loads(res.data)
 
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actors'])
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actors'])
 # Producer Fail
-	def test_get_actor_fial_Producer(self):
-		# No header
-		res = self.client().get('/actors')
-		self.assertEqual(res.status_code, 401)
+    def test_get_actor_fial_Producer(self):
+        # No header
+        res = self.client().get('/actors')
+        self.assertEqual(res.status_code, 401)
 # Director Fail
-	def test_get_actor_fial_Director(self):
-		res = self.client().get('/actors')
-		self.assertEqual(res.status_code, 401)
+    def test_get_actor_fial_Director(self):
+        res = self.client().get('/actors')
+        self.assertEqual(res.status_code, 401)
 # Assistant Fail
-	def test_get_actor_fial_Assistant(self):
-		res = self.client().get('/actors')
-		self.assertEqual(res.status_code, 401)
+    def test_get_actor_fial_Assistant(self):
+        res = self.client().get('/actors')
+        self.assertEqual(res.status_code, 401)
 #----------------------------------------------------------------------------#
 # Tests for /actors POST
 #----------------------------------------------------------------------------#
 # Producer Success
-	def test_post_actors_Producer(self):
-		res = self.client().post('/actors', json=self.new_actor1,
-								 headers={
-									 'Authorization':
-									 self.producer_t,
-									 'Content-Type': 'Text'
-									 })
-		data = json.loads(res.data)
+    def test_post_actors_Producer(self):
+        res = self.client().post('/actors', json=self.new_actor1,
+                                 headers={
+                                     'Authorization':
+                                     self.producer_t,
+                                     'Content-Type': 'Text'
+                                     })
+        data = json.loads(res.data)
 
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actor'])
-		
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
+        
 # Director Success
-	def test_post_actors_Producer(self):
-		res = self.client().post('/actors', json=self.new_actor2,
-								 headers={
-									 'Authorization':
-									 self.director_t,
-									 'Content-Type': 'Text'
-									 })
-		data = json.loads(res.data)
+    def test_post_actors_Producer(self):
+        res = self.client().post('/actors', json=self.new_actor2,
+                                 headers={
+                                     'Authorization':
+                                     self.director_t,
+                                     'Content-Type': 'Text'
+                                     })
+        data = json.loads(res.data)
 
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actor'])
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
 # Assistant Success 
-	# No possible success case
+    # No possible success case
 # Producer Fail
-	def test_post_actors_fail_Producer(self): 
-		# No json
-		res = self.client().post('/actors',
-								headers={
-									 'Authorization':
-									 self.producer_t,
-									 'Content-Type': 'Text'
-									 })
-		self.assertEqual(res.status_code, 401)
-	
+    def test_post_actors_fail_Producer(self): 
+        # No json
+        res = self.client().post('/actors',
+                                headers={
+                                     'Authorization':
+                                     self.producer_t,
+                                     'Content-Type': 'Text'
+                                     })
+        self.assertEqual(res.status_code, 401)
+    
 # Director Fail
-	def test_post_actors_fail_Director(self): 
-		# Repeated post
-		self.client().post('/actors', json=self.new_actor1,
-								headers={
-									 'Authorization':
-									 self.director_t,
-									 'Content-Type': 'Text'
-									 })
-		res = self.client().post('/actors', json=self.new_actor1,
-								headers={
-									 'Authorization':
-									 self.director_t,
-									 'Content-Type': 'Text'
-									 })
-		self.assertEqual(res.status_code, 422)
+    def test_post_actors_fail_Director(self): 
+        # Repeated post
+        self.client().post('/actors', json=self.new_actor1,
+                                headers={
+                                     'Authorization':
+                                     self.director_t,
+                                     'Content-Type': 'Text'
+                                     })
+        res = self.client().post('/actors', json=self.new_actor1,
+                                headers={
+                                     'Authorization':
+                                     self.director_t,
+                                     'Content-Type': 'Text'
+                                     })
+        self.assertEqual(res.status_code, 422)
 
 # Assistant Fail
-	def test_post_actors_fail_Assistant(self): 
-		res = self.client().post('/actors', json=self.new_actor2,
-									 headers={
-										 'Authorization':
-										 self.assistant_t,
-										 'Content-Type': 'Text'
-										 })
-		data = json.loads(res.data)
-		self.assertEqual(res.status_code, 401)
-		
+    def test_post_actors_fail_Assistant(self): 
+        res = self.client().post('/actors', json=self.new_actor2,
+                                     headers={
+                                         'Authorization':
+                                         self.assistant_t,
+                                         'Content-Type': 'Text'
+                                         })
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 401)
+        
 #----------------------------------------------------------------------------#
 # Tests for /actors PATCH
 #----------------------------------------------------------------------------#
 # Producer Success
-	def test_patch_actors_Producer(self):	
-		res = self.client().patch('/actors/1', json=self.new_actor1,
-								 headers={
-									 'Authorization':
-									 self.producer_t,
-									 'Content-Type': 'Text'
-									 })
-		data = json.loads(res.data)
-		#print("id",self.id,"data",data)
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actor'])
+    def test_patch_actors_Producer(self):   
+        res = self.client().patch('/actors/1', json=self.new_actor1,
+                                 headers={
+                                     'Authorization':
+                                     self.producer_t,
+                                     'Content-Type': 'Text'
+                                     })
+        data = json.loads(res.data)
+        #print("id",self.id,"data",data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
 # Director Success
-	def test_patch_actors_Director(self):	
-		res = self.client().patch('/actors/1', json=self.new_actor1,
-								 headers={
-									 'Authorization':
-									 self.director_t,
-									 'Content-Type': 'Text'
-									 })
-		data = json.loads(res.data)
-		#print("id",self.id,"data",data)
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['actor'])
+    def test_patch_actors_Director(self):   
+        res = self.client().patch('/actors/1', json=self.new_actor1,
+                                 headers={
+                                     'Authorization':
+                                     self.director_t,
+                                     'Content-Type': 'Text'
+                                     })
+        data = json.loads(res.data)
+        #print("id",self.id,"data",data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
 
 # Assistant Success
-	# Not possible for success
+    # Not possible for success
 # Producer Fail
-	def test_patch_actors_fail_Producer(self):
-		# Not exist
-		res = self.client().patch('/actors/30', json=self.new_movie2,
-								 headers={
-									 'Authorization':
-									 self.producer_t,
-									 'Content-Type': 'Text'
-									 })
-		
-		self.assertEqual(res.status_code, 404)
+    def test_patch_actors_fail_Producer(self):
+        # Not exist
+        res = self.client().patch('/actors/30', json=self.new_movie2,
+                                 headers={
+                                     'Authorization':
+                                     self.producer_t,
+                                     'Content-Type': 'Text'
+                                     })
+        
+        self.assertEqual(res.status_code, 404)
 # Director Fail
-	def test_patch_actors_fail_Director(self):
-		# Not exist
-		res = self.client().patch('/actors/30', json=self.new_movie2,
-								 headers={
-									 'Authorization':
-									 self.director_t,
-									 'Content-Type': 'Text'
-									 })
-		
-		self.assertEqual(res.status_code, 404)
+    def test_patch_actors_fail_Director(self):
+        # Not exist
+        res = self.client().patch('/actors/30', json=self.new_movie2,
+                                 headers={
+                                     'Authorization':
+                                     self.director_t,
+                                     'Content-Type': 'Text'
+                                     })
+        
+        self.assertEqual(res.status_code, 404)
 # Assistant Fail
-	def test_patch_actors_fail_Director(self):
-		# Not exist
-		res = self.client().patch('/actors/30', json=self.new_movie2,
-								 headers={
-									 'Authorization':
-									 self.assistant_t,
-									 'Content-Type': 'Text'
-									 })
-		
-		self.assertEqual(res.status_code, 401)
+    def test_patch_actors_fail_Director(self):
+        # Not exist
+        res = self.client().patch('/actors/30', json=self.new_movie2,
+                                 headers={
+                                     'Authorization':
+                                     self.assistant_t,
+                                     'Content-Type': 'Text'
+                                     })
+        
+        self.assertEqual(res.status_code, 401)
 #----------------------------------------------------------------------------#
 # Tests for /actors DELETE
 #----------------------------------------------------------------------------#
 # Producer Success
-	def test_delete_actors_Producer(self):
-		res = self.client().delete('/actors/1',
-								   headers={
-									   'Authorization':
-									   self.producer_t,
-									   'Content-Type': 'Text'
-									   })
-		data = json.loads(res.data)
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['delete'])
+    def test_delete_actors_Producer(self):
+        res = self.client().delete('/actors/1',
+                                   headers={
+                                       'Authorization':
+                                       self.producer_t,
+                                       'Content-Type': 'Text'
+                                       })
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['delete'])
 # Director Success
-	def test_delete_actors_Director(self):
-		res = self.client().delete('/actors/1',
-								   headers={
-									   'Authorization':
-									   self.producer_t,
-									   'Content-Type': 'Text'
-									   })
-		data = json.loads(res.data)
-		self.assertEqual(res.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['delete'])
+    def test_delete_actors_Director(self):
+        res = self.client().delete('/actors/1',
+                                   headers={
+                                       'Authorization':
+                                       self.producer_t,
+                                       'Content-Type': 'Text'
+                                       })
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['delete'])
 # Assistant Success
-	# No possible
+    # No possible
 # Producer Fail
-	def test_delete_actors_fail_Producer(self):
-		# Not exist
-		res = self.client().delete('/actors/30',
-								   headers={
-									   'Authorization':
-									   self.producer_t,
-									   'Content-Type': 'Text'
-									   })
-		self.assertEqual(res.status_code, 404)
+    def test_delete_actors_fail_Producer(self):
+        # Not exist
+        res = self.client().delete('/actors/30',
+                                   headers={
+                                       'Authorization':
+                                       self.producer_t,
+                                       'Content-Type': 'Text'
+                                       })
+        self.assertEqual(res.status_code, 404)
 
 # Director Fail
-	def test_delete_actors_fail_Director(self):
-		# Not exist
-		res = self.client().delete('/actors/30',
-								   headers={
-									   'Authorization':
-									   self.director_t,
-									   'Content-Type': 'Text'
-									   })
-		self.assertEqual(res.status_code, 404)
+    def test_delete_actors_fail_Director(self):
+        # Not exist
+        res = self.client().delete('/actors/30',
+                                   headers={
+                                       'Authorization':
+                                       self.director_t,
+                                       'Content-Type': 'Text'
+                                       })
+        self.assertEqual(res.status_code, 404)
 # Assistant Fail
-	def test_delete_actors_fail_Director(self):
-		# Not Auth
-		res = self.client().delete('/actors/1',
-								   headers={
-									   'Authorization':
-									   self.assistant_t,
-									   'Content-Type': 'Text'
-									   })
-		self.assertEqual(res.status_code, 401)
-	
+    def test_delete_actors_fail_Director(self):
+        # Not Auth
+        res = self.client().delete('/actors/1',
+                                   headers={
+                                       'Authorization':
+                                       self.assistant_t,
+                                       'Content-Type': 'Text'
+                                       })
+        self.assertEqual(res.status_code, 401)
+    
 
 if __name__ == "__main__":
-	unittest.main()
+    unittest.main()
