@@ -1,0 +1,236 @@
+#TODO List
+
+1. Model                         1 hr
+2. Database connection           1 hr
+3. Auth0 setting                 1 hr
+4. Endpoint                      2 hr
+5. Test                          1 hr
+6. Deploy                        1 hr
+
+
+
+Casting Agency Specifications
+	The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
+
+Models: 1 hr
+
+	Movies with attributes title and release date
+	Actors with attributes name, age and gender
+
+Endpoints:
+	GET /actors and /movies
+	DELETE /actors/ and /movies/
+	POST /actors and /movies and
+	PATCH /actors/ and /movies/
+
+
+Roles (Auth0):
+	Casting Assistant
+			Can view actors and movies
+	Casting Director
+			All permissions a Casting Assistant has and…
+			Add or delete an actor from the database
+			Modify actors or movies
+	Executive Producer
+			All permissions a Casting Director has and…
+			Add or delete a movie from the database
+
+	Tests:
+		One test for success behavior of each endpoint
+		One test for error behavior of each endpoint
+		At least two tests of RBAC for each role
+
+
+This is the last project of the Udacity-Full-Stack-Nanodegree Course. It covers following technical topics in 1 app:
+
+Database modeling with postgres & sqlalchemy (see models.py)
+API to performance CRUD Operations on database with Flask (see app.py)
+Automated testing with Unittest (see test_app)
+Authorization & Role based Authentification with Auth0 (see auth.py)
+Deployment on Heroku
+
+
+
+
+https://fsnd5141.us.auth0.com/authorize?audience=capstone&response_type=token&client_id=B3TZ2WUxfLCQmvd98tmShMYDIS4a4m6D&redirect_uri=http://127.0.0.1:8080
+
+
+https://fsnd5141.us.auth0.com/authorize?audience=capstone&response_type=token&client_id=B3TZ2WUxfLCQmvd98tmShMYDIS4a4m6D&redirect_uri=http://flask-deploy-test2.herokuapp.com
+
+https://fsnd5141.us.auth0.com/v2/logout
+
+
+
+
+
+
+
+
+
+
+curl http://localhost:8080/movies -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+
+
+
+Execute Producer jwt:
+
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVlbDRPRkdvd3ZocUhkQUFNalFkSCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQ1MTQxLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZjI0ZmQ3ZjMxYmVkNTAwOTkwNDE3MzQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTU5NjYxNzkzMiwiZXhwIjoxNTk2NjI1MTMyLCJhenAiOiJCM1RaMldVeGZMQ1FtdmQ5OHRtU2hNWURJUzRhNG02RCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.wW2jdPxG0cFcYcZQgctXBOhszbDEm-rQiXaOoj9KLN0mqrbq0cGQ4qg7nSBOkcn9-NvbsIGk6uiSJo-ORm972VcVfgCrIOFoZNainsOpAf4bpeKdGBu0aD_bePYjJt36BB32V4130jz4G_3NazTNHlaLeICKdDSus0izIYxsTnM4avcCuE3Do72MPSC7sIj_n1swcA_9HVvReknrDEKJL4_ohGaDWGGEdOgZDYzTI2l0VqfiEcXrUCXdrWyIbntwAnN7kWknA7FMJk0kwh7CAjuUXXmPHfdcdrMVG2YifkrCe7vSM_K9zrf19_qqWQCk0RMYlxyLLCjt-2NjZiC43A
+
+get:
+curl  http://flask-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"
+
+{"success": true, "actors": [{"id": 1, "name": "Christy", "age": 22, "gender": "Female"}]}
+
+Post:
+curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"name":"Tom Hank","age":68,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors
+
+{"actor":[{"age":68,"gender":"male","id":6,"name":"Tom Hank"}],"success":true}  
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/actors/6
+
+{"delete":6,"success":true} 
+
+PATCH 
+
+curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/4
+
+{"actor":[{"age":30,"gender":"male","id":7,"name":"Tom Hank"}],"success":true}   
+
+
+
+movie
+
+
+get:
+curl -H 'Accept: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/movies
+
+Post:
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X POST http://flask-deploy-test2.herokuapp.com/movies
+
+{"movie":[{"id":4,"release_date":"2020-08-04T00:00:00","title":"Talent"}],"success":true}   
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}"  http://flask-deploy-test2.herokuapp.com/movies/2
+
+{"delete":3,"success":true} 
+
+PATCH 
+
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${PRODUCER}" --data '{"title":"Talent","release_date":"2020-08-12"}'  -X PATCH http://flask-deploy-test2.herokuapp.com/movies/2
+
+{"movie":[{"id":4,"release_date":"2020-08-12T00:00:00","title":"Talent"}],"success":true}
+
+
+Casting director jwt:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVlbDRPRkdvd3ZocUhkQUFNalFkSCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQ1MTQxLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZjI3MTVjYjMxYmVkNTAwOTkwNDI5MzYiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTU5NjYxODA0NSwiZXhwIjoxNTk2NjI1MjQ1LCJhenAiOiJCM1RaMldVeGZMQ1FtdmQ5OHRtU2hNWURJUzRhNG02RCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiXX0.Pm--G2r1_JB_1mTyowIEB-az_XtKwHkU3PavXSn6lAQGRSyok60SQZrONAvB33us9OlygkX2MCrsY8A0HJKl3qAkycT7xIK77XR8B8avxWnq3emtuWeQo6NzLcFN9-kvNFeBfl6w8QdlD5f6V3QoSuTGje9Ly9sSma02o9Ql9fy1bqKjKA1K1VcyxRMiqcVWBBUGN8lqQriqr-KPRaj85JaWwL8YiAA1lj3Bx7b2wNDHEbZlCRo7w6JL3eNkXk566l_vmyNg6TQfyJgs89b_SrTXnsskoMikL71-JsBZ2Y8ME3x1-AQGBnVoWf0dSHzA9ixxekCe7LVqVwkvBMAXeQ
+
+
+get:
+curl  http://-deploy-test2.herokuapp.com/actors -H 'Accept: application/json' -H "Authorization: Bearer ${DIRECTOR}"
+
+{"success": true, "actors": [{"id": 1, "name": "Christy", "age": 22, "gender": "Female"}]}
+
+Post:
+curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"name":"Tom Hank","age":68,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors
+
+{"actor":[{"age":68,"gender":"male","id":8,"name":"Tom Hank"}],"success":true}
+
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}"  http://flask-deploy-test2.herokuapp.com/actors/4
+
+{"delete":7,"success":true}  
+
+PATCH 
+
+curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/4
+
+{"actor":[{"age":30,"gender":"male","id":8,"name":"Tom Hank"}],"success":true}  
+
+movie
+
+get:
+curl -H 'Accept: application/json' -H "Authorization: Bearer ${DIRECTOR}"  http://flask-deploy-test2.herokuapp.com/movies
+
+{"success": true, "movies": [{"id": 1, "title": "The Great Escape", "release_date": "2020-08-04T00:00:00"}]}
+
+Post:
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X POST http://flask-deploy-test2.herokuapp.com/movies
+
+{"error":401,"message":"AuthError","success":false}
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}"  http://flask-deploy-test2.herokuapp.com/movies/2
+
+{"error":401,"message":"AuthError","success":false} 
+
+PATCH 
+
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${DIRECTOR}" --data '{"title":"Talent","release_date":"2020-08-12"}'  -X PATCH http://flask-deploy-test2.herokuapp.com/movies/2
+
+{"movie":[{"id":4,"release_date":"2020-08-12T00:00:00","title":"Talent"}],"success":true}
+
+
+
+Casting assistance:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InVlbDRPRkdvd3ZocUhkQUFNalFkSCJ9.eyJpc3MiOiJodHRwczovL2ZzbmQ1MTQxLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZjI5YjQ1MjVjODQ4ZjAwMzdjNDZhNWEiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTU5NjYxNDQyOCwiZXhwIjoxNTk2NjIxNjI4LCJhenAiOiJCM1RaMldVeGZMQ1FtdmQ5OHRtU2hNWURJUzRhNG02RCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.GxIoMiDoIzFncoIX3dALHOt0y6wGyclDJS1HFUj4T5rIgQTx7vjeFpaYj7xhajigAukF_VNv9wUxgLi5Znr3Nb2EhgpqU1BSIi3KKBQjiBt2GtasrZZon9L3KM16Wo_Tm07_Vrv2XP3ioCAT-uHYX4M8rT8_E6E4qltRvDYoHLXKEcfPMRO0N_pwrn2W9q4W285UsPNHFL2qzBwldq43lBdUI-y0zBDiFAloufz7eu6sPuRwecasBYT1MknB6fayxpago34OuuBhW2RHgdvQ4CQBnJQLlm4Iiq9mBdoMipzZ9tF7Pv8EA3_TMtXfNZ4x_4QW2PgfBO_IzuwprrUhIA
+
+get:
+curl  -H 'Accept: application/json' -H "Authorization: Bearer ${ASSIST}" http://flask-deploy-test2.herokuapp.com/actors 
+
+{"success": true, "actors": [{"id": 1, "name": "Christy", "age": 22, "gender": "Female"}, {"id": 5, "name": "Tom Hank", "age": 68, "gender": "male"}]}
+
+Post:
+curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}" --data '{"name":"Tom Hank","age":68,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors
+{"error":401,"message":"AuthError","success":false} 
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}"  http://flask-deploy-test2.herokuapp.com/actors/4
+{"error":401,"message":"AuthError","success":false} 
+
+PATCH 
+
+curl -X PATCH -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}" --data '{"name":"Tom Hank","age":30,"gender":"male"}' http://flask-deploy-test2.herokuapp.com/actors/4
+
+{"error":401,"message":"AuthError","success":false} 
+
+movie
+
+
+get:
+curl -H 'Accept: application/json' -H "Authorization: Bearer ${ASSIST}"  http://flask-deploy-test2.herokuapp.com/movies
+
+{"success": true, "movies": [{"id": 1, "title": "The Great Escape", "release_date": "2020-08-04T00:00:00"}, {"id": 3, "title": "Talent", "release_date": "2020-08-12T00:00:00"}]}
+
+
+Post:
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}" --data '{"title":"Talent","release_date":"2020-08-04"}'  -X POST http://flask-deploy-test2.herokuapp.com/movies
+{"error":401,"message":"AuthError","success":false} 
+
+Delete:
+curl -X DELETE -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}"  http://flask-deploy-test2.herokuapp.com/movies/2
+{"error":401,"message":"AuthError","success":false} 
+
+PATCH 
+
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer ${ASSIST}" --data '{"title":"Talent","release_date":"2020-08-12"}'  -X PATCH http://flask-deploy-test2.herokuapp.com/movies/2
+
+{"error":401,"message":"AuthError","success":false} 
+
+
+
+
+
+
+curl --request POST \
+--url 'https://fsnd5141.us.auth0.com/oauth/token' \
+--header 'content-type: application/x-www-form-urlencoded' \
+--data 'grant_type=password&username="hsiaos3@uw.edu"&password="Shawn@5141"&audience=http://localhost:8080&client_id=p7GVnaVQ18EvPZf7MaBP4FUJhWWuYBVj&client_secret=nEeOMyOaZrkPWm5mELJouypdKcCnJe6xwTGd3VJ7Ljy8aDdcZGnTKI2ciGSyCuow'
+
+
+curl --request POST \
+  --url 'https://YOUR_DOMAIN/oauth/token' \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data 'grant_type=password&username=USERNAME&password={$PASSWORD}&audience=API_IDENTIFIER&scope=SCOPE&client_id=YOUR_CLIENT_ID&client_secret="nEeOMyOaZrkPWm5mELJouypdKcCnJe6xwTGd3VJ7Ljy8aDdcZGnTKI2ciGSyCuow"
+ }'
