@@ -1,7 +1,7 @@
 This is the public repository for Udacity's Full-Stack Nanodegree program.
 
 
-4 project demonstrate my skills of building Full-stack application includes
+5 project demonstrate my skills of building Full-stack application includes
 
 1. [Fyyur](https://github.com/Shawn5141/Full-stack-Nanodegree-Project/tree/master/projects/01_fyyur/starter_code) -
 - A musical venue and artist booking site that facilitates the discovery and bookings of shows between local performing artists and venues. By utilizing Flask, SQLAlchemy, Postgres database, I created functionality with end point that enable CRUD function for artisis list and venues lists.
