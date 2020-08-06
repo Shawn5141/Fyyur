@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, abort
 from sqlalchemy import exc
 import json
 from flask_cors import CORS
-from models import db_drop_and_create_all, setup_db,Actor, Movie
+from models import db_drop_and_create_all, setup_db, Actor, Movie
 from auth.auth import AuthError, requires_auth
 
 
@@ -12,23 +12,19 @@ def create_app(test_config=None):
     setup_db(app)
     db_drop_and_create_all()
     CORS(app)
+
     @app.after_request
     def after_request(response):
-      response.headers.add('Access-Control-Allow-Headers', 
-        'Content-Type, Authorization, true')
-      response.headers.add('Access-Control-Allow-Methods', 
-        'GET, PATCH, POST, DELETE, OPTIONS')
-      return response
-
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, PATCH, POST, DELETE, OPTIONS')
+        return response
 
     @app.route('/')
     def Hello():
         return "hello world"
 
-
     # Get actors
 
-    
     @app.route('/actors')
     @requires_auth('get:actors')
     def get_actors(jwt):
@@ -39,12 +35,9 @@ def create_app(test_config=None):
                 "actors": actors
                 })
         except Exception:
-            #print(Exception)
             abort(404)
 
-
     # Get movie
-
 
     @app.route('/movies')
     @requires_auth('get:movies')
@@ -58,9 +51,7 @@ def create_app(test_config=None):
         except Exception:
             abort(404)
 
-
     # Create actor
-
 
     @app.route('/actors', methods=["POST"])
     @requires_auth('post:actors')
@@ -68,17 +59,13 @@ def create_app(test_config=None):
 
         try:
             new_actor = request.get_json()
-            #name = json.loads(request.data.decode('utf-8'))['name']
-            #print("new_actor",new_actor,request.data)
             name = new_actor.get('name')
-            age =  new_actor.get('age')
+            age = new_actor.get('age')
             gender = new_actor.get('gender')
             if name == '' or age == '' or gender == '':
                 abort(400)
 
-            actor = Actor(
-                name=name,age=age,gender=gender
-            )
+            actor = Actor(name=name, age=age, gender=gender)
             actor.insert()
             return jsonify({
                 'success': True,
@@ -86,33 +73,25 @@ def create_app(test_config=None):
             }), 200
 
         except exc.SQLAlchemyError as e:
-            #print("e",e)
             abort(422)
         except Exception as error:
-            #print(error)
             raise AuthError({
                     'code': '401',
                     'description': 'unable to post.'
                 }, 401)
 
-
     # Create Movie
-
 
     @app.route('/movies', methods=["POST"])
     @requires_auth('post:movies')
     def create_movie(jwt):
-
         try:
             new_actor = request.get_json()
             title = new_actor.get('title')
-            release_date =  new_actor.get('release_date')
+            release_date = new_actor.get('release_date')
             if title == '' or release_date == '':
                 abort(400)
-
-            movie = Movie(
-                title=title,release_date=release_date
-            )
+            movie = Movie(title=title, release_date=release_date)
             movie.insert()
             return jsonify({
                 'success': True,
@@ -120,7 +99,6 @@ def create_app(test_config=None):
             }), 200
 
         except exc.SQLAlchemyError as e:
-            #print(e)
             abort(422)
         except Exception as error:
             raise AuthError({
@@ -128,9 +106,7 @@ def create_app(test_config=None):
                     'description': 'unable to post.'
                 }, 401)
 
-
     # Edit Actor
-
 
     @app.route('/actors/<int:actor_id>', methods=["PATCH"])
     @requires_auth('patch:actors')
@@ -150,18 +126,14 @@ def create_app(test_config=None):
             return jsonify({"success": True,
                             "actor": [actor.format()]})
         except exc.SQLAlchemyError as e:
-            #print(e)
             abort(422)
         except Exception as error:
-            #print(error)
             raise AuthError({
                     'code': '401',
                     'description': 'unable to patch.'
                 }, 401)
 
-
     # Edit movie
-
 
     @app.route('/movies/<int:movie_id>', methods=["PATCH"])
     @requires_auth('patch:movies')
@@ -181,15 +153,12 @@ def create_app(test_config=None):
         except exc.SQLAlchemyError as e:
             abort(422)
         except Exception as error:
-            #print(error)
             raise AuthError({
-                    'code': '401',      
+                    'code': '401',
                     'description': 'unable to patch.'
                 }, 401)
 
-
     # Delete actor
-
 
     @app.route('/actors/<int:actor_id>', methods=["DELETE"])
     @requires_auth('delete:actors')
@@ -206,9 +175,7 @@ def create_app(test_config=None):
         except Exception as error:
             abort(500)
 
-
     # Delete movie
-
 
     @app.route('/movies/<int:movie_id>', methods=["DELETE"])
     @requires_auth('delete:movies')
@@ -223,12 +190,9 @@ def create_app(test_config=None):
         except exc.SQLAlchemyError as e:
             abort(422)
         except Exception as error:
-            #print(error)
             abort(500)
 
-
     # Error Handling
-
 
     @app.errorhandler(422)
     def unprocessable(error):

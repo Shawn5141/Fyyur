@@ -9,19 +9,6 @@ from sqlalchemy import desc
 from datetime import date
 
 
-# casting_assistant_auth_header = {
-#     'Authorization': bearer_tokens['casting_assistant']
-# }
-
-# casting_director_auth_header = {
-#     'Authorization': bearer_tokens['casting_director']
-# }
-
-# executive_producer_auth_header = {
-#     'Authorization': bearer_tokens['executive_producer']
-# }
-
-
 class AgencyTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
