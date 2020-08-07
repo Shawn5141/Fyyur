@@ -82,5 +82,5 @@ Used tech stack:
 - Authorization & Role based Authentification with `Auth0` (see `auth.py`)
 - Deployment on `Heroku` (see `setup.sh`)
 
-
+![Certificate](FSND_Certificate.PNG)
 
